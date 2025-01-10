@@ -5,10 +5,14 @@ import { ControllersModule } from '@/appication/controllers';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'sqlite',
-      database: 'database.sqlite',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      type: 'postgres',
+      host: process.env.DB_HOST ?? 'localhost',
+      port: 5432,
+      username: 'user',
+      password: 'root',
+      database: 'url-shortener',
       synchronize: true,
+      autoLoadEntities: true,
     }),
     ControllersModule,
   ],

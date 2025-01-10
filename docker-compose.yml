@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  client:
+    container_name: url-shortener-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+  backend:
+    container_name: url-shortener-gate
+    environment:
+      DB_HOST: "db"
+    build:
+      context: ./gate
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./gate:/app
+      - /app/node_modules
+      - ./gate:/usr/src/app/database
+    depends_on:
+      - db
+
+
+  db:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_DB: url-shortener
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: root
+      PGDATA: /data/postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always

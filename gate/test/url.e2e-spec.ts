@@ -11,10 +11,14 @@ describe('UrlController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: 'database-test.sqlite',
-          entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+          type: 'postgres',
+          host: 'db',
+          port: 5432,
+          username: 'user',
+          password: 'root',
+          database: 'url-shortener',
           synchronize: true,
+          autoLoadEntities: true,
         }),
         ControllersModule,
       ],
